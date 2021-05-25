@@ -1,0 +1,41 @@
+GameState:
+  Robot:
+    position: [0,0]
+    theta: 0
+    rightTorpedo: True
+    leftTorpedo: True
+    gripperState: False # False = open
+  Items:
+    - Wrench:
+        image: "assets/wrench.png"
+        position: [3,3]
+    - Hammer:
+        image: "assets/hammer.png"
+        position: [5,5]
+  TorpedoTargets:
+    - LeftTorpedo:
+        image: "assets/torpedo_board.png"
+        position: [2,2]
+        radius: 1
+        blocked: True
+    - RightTorpedo:
+        image: "assets/torpedo_board.png"
+        position: [2, 2.5]
+        radius: 1
+        blocked: False
+  DropLocations:
+    - WrenchDrop:
+        image: "assets/drop_wrench.png"
+        position: [3,3]
+        outcome:
+          target: "LeftTorpedo"
+          action: "UNBLOCK"
+          reversible: True
+    - HammerDrop:
+        image: "assets/drop_hammer.png"
+        position: [1.5, 1.5]
+        outcome:
+          target: "RightTorpedo"
+          action: "BLOCK"
+          reversible: True
+      

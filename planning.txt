@@ -1,0 +1,48 @@
+Sensors:         Odometry, angle/bearing to obstacle, position estimates, laser scan
+Actuators:       Four (vectored) thrusters, Gripper, Torpedoes 
+
+Preliminaries:
+  1. ROS p1: Topics, Messages, and Pub/Sub
+  2. ROS p2: Services and Parameters
+
+System Overview
+
+Navigation:
+  1. DFS
+  2. A*
+  3. Smoothing
+  4. Expansive Planners
+  5. RRT/RRT*
+
+Controls:
+  1. PID
+  2. Thruster Allocation
+  3. Trajectory Tracking
+  4. Bonus: Overview of LQR, MPC, and other advanced topics.
+
+SLAM:            Odometry PF for localization, occupancy grid mapping
+  1. Bayesian Approaches: Bayes Filter, KF, EKF
+  2. Odometry PF for localization
+  3. Occupancy grid mapping
+  4. SLAM: EKFSlam
+  5. SLAM: FastSLAM
+
+State machine:   Simple python case switches (yay 3.10?)
+  1. A simple framework
+
+Videos:
+
+Barebones:
+	- Intro
+	- Architecture overview
+	- Pathfinding: DFS and A*
+	- Controls: PID
+	- State estimation: PF
+	- State estimation: EKF
+
+Extensions:
+	- ROSify
+	- Controls: LQR
+	- Pathfinding: Expansive planners
+	- Pathfinding: RRT/RRT*
+	- State Estimation: SLAM: FASTSlam
