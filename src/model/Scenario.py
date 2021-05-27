@@ -15,15 +15,15 @@ import yaml
 import utils
 import GamePiece
 from Robot import Robot 
+from Map import Map
 
+# Store the current state of the execution
 class GameState:	
 	def __init__(self, config: str) -> None:
 		fullPath = os.path.join(Path(__file__).parent, "../../", config)
 		with open(fullPath) as f:
-			data = yaml.load(f, Loader=yaml.FullLoader)
+			gameConfig = yaml.load(f, Loader=yaml.FullLoader)
 
-			gameConfig = utils.loadSafe(data, "GameState")
-		
 			robotConfig = utils.loadSafe(gameConfig, "Robot")
 			self.robotState = Robot(robotConfig)
 
@@ -35,7 +35,10 @@ class GameState:
 			
 			dropLocations = utils.loadSafe(gameConfig, "DropLocations", strict=False)
 			self.dropLocations = GamePiece.makePieceSet(dropLocations, GamePiece.DropLocation)
-
+			
+			mapPath = utils.loadSafe(gameConfig, "Map")
+			fullMapPath = os.path.join(Path(__file__).parent, "../../", "configs", "maps", mapPath)
+			self.map = Map(fullMapPath)
 
 		self.checkboxes		= {}
 		self.dropdowns		= {}

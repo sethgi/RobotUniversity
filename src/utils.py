@@ -2,11 +2,15 @@ import sys
 from PIL import Image
 from pathlib import Path
 import os
+import sympy.geometry as geometry
 
 def warn(message):
 	print("WARNING: " + message, file=sys.stderr)
 
-def loadSafe(config, key, strict=True, default=None):
+# Loads the key from the config dictionary, with better exception handling.
+# If strict is set, this throws an exception if the key isn't present. 
+# If strict is false, then this returns the default value if the key isn't present
+def loadSafe(config, key, strict=True, default=None, warnIfMissing=True):
 	try:
 		result = config[key]
 		return result
@@ -16,21 +20,28 @@ def loadSafe(config, key, strict=True, default=None):
 		if strict:
 			raise Exception(message)
 		else:
-			warn(message)
+			if warnIfMissing:
+				warn(message)
 			return default
 
 
-def loadListSafe(config, key, length, strict=True, default=None):
+# Like loadSafe, but makes sure the result is a list of the correct length
+def loadListSafe(config, key, length=None, strict=True, default=None, warnIfMissing=True):
 	result = loadSafe(config, key, strict=strict)
 	if result is None:
 		return default
 	
 	try:
-		assert(length == len(result))
+		realLength = len(result)
+
+		# If enforcing a length, make sure it's right
+		if length is not None:
+			assert(length == len(result))
+		
 		return result
 	except (TypeError, AssertionError):
-		if type(result) != list:
-			correction = "not a list"
+		if type(result) != list or length is None:
+			correction = "not a valid list"
 		else:
 			correction = "of length {}".format(len(result))
 
@@ -40,9 +51,11 @@ def loadListSafe(config, key, length, strict=True, default=None):
 		if strict:
 			raise Exception(message)
 		else:
-			warn(message)
+			if warnIfMissing:
+				warn(message)
 			return default
 
+# Like loadSafe, but makes sure that the result is a path to a valid image file
 def loadImageSafe(config, key):
 	result = loadSafe(config, key)
 	
@@ -52,8 +65,19 @@ def loadImageSafe(config, key):
 		img.close()
 		return path
 	except:
-		# TODO: Remove 'return path' once images are in place
+		# TODO: Remove 'return path' once images are in place. Ignoring for testing.
 		return path
 		raise Exception("Image {} not valid".format(key))
 
+def makeBoundingBox(x,y,width,height, theta=0):
+		minX = x-width/2
+		maxX = minX + width
 
+		minY = y-height/2
+		maxY = minY + height
+			
+		points = ((minX, minY), (minX, maxY), (maxX, minY), (maxX, maxY))
+
+		# Sympy requires points as individual arguments. *points does this
+		# by unpacking the tuple before it's passed to the constructor
+		return geometry.Polygon(*points).rotate(theta)

@@ -1,6 +1,8 @@
-GameState:
+  Map: "base.yaml"
   Robot:
     position: [0,0]
+    width: 0.25
+    height: 0.25
     theta: 0
     rightTorpedo: True
     leftTorpedo: True
@@ -9,6 +11,8 @@ GameState:
     - Wrench:
         image: "assets/wrench.png"
         position: [3,3]
+        width: 0.05
+        height: 0.1
     - Hammer:
         image: "assets/hammer.png"
         position: [5,5]
@@ -27,6 +31,7 @@ GameState:
     - WrenchDrop:
         image: "assets/drop_wrench.png"
         position: [3,3]
+        receives: "Wrench"
         outcome:
           target: "LeftTorpedo"
           action: "UNBLOCK"
@@ -34,6 +39,7 @@ GameState:
     - HammerDrop:
         image: "assets/drop_hammer.png"
         position: [1.5, 1.5]
+        receives: "Hammer"
         outcome:
           target: "RightTorpedo"
           action: "BLOCK"

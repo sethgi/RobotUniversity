@@ -1,0 +1,31 @@
+width: 10
+height: 6
+obstacles:
+  - 
+    shape: "rectangle"
+    width: 2
+    height: 2
+    xPosition: 5
+    yPosition: 3
+    rotation: 0
+  -
+    shape: "circle"
+    radius: 0.5
+    xPosition: 3
+    yPosition: 2
+  - 
+    shape: "polygon"
+    corners:
+      - [0,0]
+      - [0,1]
+      - [1,1]
+walls:
+  - 
+    start: [3,0]
+    end:   [3,2]
+  - 
+    start: [3,5]
+    end:   [3,6]
+  -
+    start: [10, 3]
+    end:   [7, 3]
