@@ -24,9 +24,6 @@ class GameState:
 		with open(fullPath) as f:
 			gameConfig = yaml.load(f, Loader=yaml.FullLoader)
 
-			robotConfig = utils.loadSafe(gameConfig, "Robot")
-			self.robotState = Robot(robotConfig)
-
 			items = utils.loadSafe(gameConfig, "Items", strict=False)
 			self.gripperItems = GamePiece.makePieceSet(items, GamePiece.GripperItem)
 
@@ -36,6 +33,11 @@ class GameState:
 			dropLocations = utils.loadSafe(gameConfig, "DropLocations", strict=False)
 			self.dropLocations = GamePiece.makePieceSet(dropLocations, GamePiece.DropLocation)
 			
+			self.dt = utils.loadSafe(gameConfig, "DT", strict=False, default=0.1)
+
+			robotConfig = utils.loadSafe(gameConfig, "Robot")
+			self.robotState = Robot(robotConfig, self.dt)
+
 			mapPath = utils.loadSafe(gameConfig, "Map")
 			fullMapPath = os.path.join(Path(__file__).parent, "../../", "configs", "maps", mapPath)
 			self.map = Map(fullMapPath)

@@ -1,12 +1,16 @@
   Map: "base.yaml"
+  DT: 0.1
   Robot:
     position: [0,0]
     width: 0.25
-    height: 0.25
+    length: 0.25
+    height: 0.1 # For physics (drag)
+    mass: 20
     theta: 0
     rightTorpedo: True
     leftTorpedo: True
     gripperState: False # False = open
+
   Items:
     - Wrench:
         image: "assets/wrench.png"
