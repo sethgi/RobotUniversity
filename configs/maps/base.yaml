@@ -16,16 +16,16 @@ obstacles:
   - 
     shape: "polygon"
     corners:
-      - [0,0]
       - [0,1]
-      - [1,1]
+      - [0,2]
+      - [1,2]
 walls:
   - 
     start: [3,0]
     end:   [3,2]
   - 
-    start: [3,5]
-    end:   [3,6]
+    start: [3.5,4]
+    end:   [3.5,6]
   -
-    start: [10, 3]
-    end:   [7, 3]
+    start: [10, 1.5]
+    end:   [7, 1.5]

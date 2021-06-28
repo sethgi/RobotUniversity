@@ -1,8 +1,8 @@
   Map: "base.yaml"
   Robot:
     position: [0,0]
-    width: 0.25
-    height: 0.25
+    width: 1
+    height: 1
     theta: 0
     rightTorpedo: True
     leftTorpedo: True
@@ -10,27 +10,30 @@
   Items:
     - Wrench:
         image: "assets/wrench.png"
-        position: [3,3]
-        width: 0.05
-        height: 0.1
+        position: [2,5]
+        width: 0.3
+        height: 0.6
     - Hammer:
         image: "assets/hammer.png"
-        position: [5,5]
+        position: [9.5,0.25]
   TorpedoTargets:
     - LeftTorpedo:
         image: "assets/torpedo_board.png"
-        position: [2,2]
-        radius: 1
+        position: [4.5,1]
+        radius: 0.5
         blocked: True
     - RightTorpedo:
-        image: "assets/torpedo_board.png"
-        position: [2, 2.5]
-        radius: 1
+        image: "assets/torpedo_bowidth: 0.3
+        height: 0.6ard.png"
+        position: [5.5, 1]
+        radius: 0.5
         blocked: False
   DropLocations:
     - WrenchDrop:
         image: "assets/drop_wrench.png"
-        position: [3,3]
+        width: 1
+        height: 1
+        position: [8.5,2.5]
         receives: "Wrench"
         outcome:
           target: "LeftTorpedo"
@@ -38,7 +41,9 @@
           reversible: True
     - HammerDrop:
         image: "assets/drop_hammer.png"
-        position: [1.5, 1.5]
+        position: [8.5, 3.5]
+        width: 1
+        height: 1
         receives: "Hammer"
         outcome:
           target: "RightTorpedo"
