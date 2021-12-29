@@ -1,4 +1,4 @@
-import utils
+from utils import utils
 from typing import List
 import sympy.geometry as geometry
 

@@ -4,7 +4,7 @@
     width: 1
     height: 1
     theta: 0
-    rightTorpedo: True
+    rightTorpedo: True # True = loaded
     leftTorpedo: True
     gripperState: False # False = open
   Items:

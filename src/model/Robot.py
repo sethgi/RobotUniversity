@@ -1,4 +1,4 @@
-import utils
+from utils import utils
 import sympy.geometry as geometry
 
 class Robot:

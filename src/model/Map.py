@@ -1,4 +1,4 @@
-import utils
+from utils import utils
 import sympy.geometry as geometry
 import yaml
 
@@ -19,7 +19,10 @@ class Map:
 
 		walls = utils.loadListSafe(mapConfig, "walls", strict=False)
 		self.walls = list(map(self.loadWall, walls))
-	
+
+	def __eq__(self, other):
+		return self.bounds == other.bounds and self.walls == other.walls and self.obstacles == other.obstacles
+
 	def loadObstacle(self, obstacle):
 		shape = utils.loadSafe(obstacle, "shape")
 

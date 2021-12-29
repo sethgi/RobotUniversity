@@ -1,2 +1,5 @@
 - loadImageSafe: stop returning even when exception
+- Move prints to logging statements
 - gamePiece: better error messages
+- Move path setup to something easy
+  - Make sure there isn't  a more pythonic way to do this

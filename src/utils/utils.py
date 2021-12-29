@@ -4,9 +4,6 @@ from pathlib import Path
 import os
 import sympy.geometry as geometry
 
-def warn(message):
-	print("WARNING: " + message, file=sys.stderr)
-
 # Loads the key from the config dictionary, with better exception handling.
 # If strict is set, this throws an exception if the key isn't present. 
 # If strict is false, then this returns the default value if the key isn't present
@@ -21,7 +18,7 @@ def loadSafe(config, key, strict=True, default=None, warnIfMissing=True):
 			raise Exception(message)
 		else:
 			if warnIfMissing:
-				warn(message)
+				GameWarn(message)
 			return default
 
 
@@ -76,7 +73,7 @@ def makeBoundingBox(x,y,width,height, theta=0):
 		minY = y-height/2
 		maxY = minY + height
 			
-		points = ((minX, minY), (minX, maxY), (maxX, minY), (maxX, maxY))
+		points = ((minX, minY), (minX, maxY), (maxX, maxY), (maxX, minY))
 
 		# Sympy requires points as individual arguments. *points does this
 		# by unpacking the tuple before it's passed to the constructor
