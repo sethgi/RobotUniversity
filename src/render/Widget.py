@@ -1,13 +1,8 @@
-import sys
-import os.path
-from pathlib import Path
-sys.path.append(
-    os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 import pygame
 
 from utils.logger import *
 
-class Renderer:
+class Widget:
     def __init__(self, width: int, height: int) -> None:
         self._width = width
         self._height = height

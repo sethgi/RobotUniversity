@@ -12,8 +12,8 @@ def loadSafe(config, key, strict=True, default=None, warnIfMissing=True):
 		result = config[key]
 		return result
 	except KeyError:
-		message = "Key {} is not present in the configuration. " \
-							"Please make sure the config is valid.".format(key)
+		message = f"Key {key} is not present in the configuration " \
+							"Please make sure the config is valid."
 		if strict:
 			raise Exception(message)
 		else:
@@ -67,13 +67,13 @@ def loadImageSafe(config, key):
 		raise Exception("Image {} not valid".format(key))
 
 def makeBoundingBox(x,y,width,height, theta=0):
-		minX = x-width/2
-		maxX = minX + width
+		min_x = x-width/2
+		max_x = min_x + width
 
-		minY = y-height/2
-		maxY = minY + height
+		min_y = y-height/2
+		max_y = min_y + height
 			
-		points = ((minX, minY), (minX, maxY), (maxX, maxY), (maxX, minY))
+		points = ((min_x, min_y), (min_x, max_y), (max_x, max_y), (max_x, min_y))
 
 		# Sympy requires points as individual arguments. *points does this
 		# by unpacking the tuple before it's passed to the constructor

@@ -4,87 +4,57 @@ Description: Model of the game state.
 Author: Seth Isaacson
 """
 
-import sys
-import os.path
-from pathlib import Path
-sys.path.append(
-		os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-
 import time
 import yaml
+import pygame
+import os
+from pathlib import Path
+
 from utils import utils
-import model.GamePiece as GamePiece
+from model import GamePiece
 from model.Robot import Robot 
 from model.Map import Map
-from render.RenderGame import GameRenderer
+from render.GameRenderer import GameRenderer
 
-import pygame
 
 # Store the current state of the execution
 class GameState:	
 	def __init__(self, config: str) -> None:
 		fullPath = os.path.join(Path(__file__).parent, "../../", config)
 		with open(fullPath) as f:
-			gameConfig = yaml.load(f, Loader=yaml.FullLoader)
+			game_config = yaml.load(f, Loader=yaml.FullLoader)
 
-			robotConfig = utils.loadSafe(gameConfig, "Robot")
-			self.robotState = Robot(robotConfig)
+			robot_config = utils.loadSafe(game_config, "Robot")
+			self._robot_state = Robot(robot_config)
 
-			items = utils.loadSafe(gameConfig, "Items", strict=False)
-			self.gripperItems = GamePiece.makePieceSet(items, GamePiece.GripperItem)
+			items = utils.loadSafe(game_config, "Items", strict=False)
+			self._gripper_items = GamePiece.makePieceSet(items, GamePiece.GripperItem)
 
-			torpedoTargets = utils.loadSafe(gameConfig, "TorpedoTargets", strict=False)
-			self.torpedoTargets = GamePiece.makePieceSet(torpedoTargets, GamePiece.TorpedoTarget)
+			torpedoTargets = utils.loadSafe(game_config, "TorpedoTargets", strict=False)
+			self._torpedo_targets = GamePiece.makePieceSet(torpedoTargets, GamePiece.TorpedoTarget)
 			
-			dropLocations = utils.loadSafe(gameConfig, "DropLocations", strict=False)
-			self.dropLocations = GamePiece.makePieceSet(dropLocations, GamePiece.DropLocation)
+			dropLocations = utils.loadSafe(game_config, "DropLocations", strict=False)
+			self._drop_locations = GamePiece.makePieceSet(dropLocations, GamePiece.DropLocation)
 			
-			mapPath = utils.loadSafe(gameConfig, "Map")
-			fullMapPath = os.path.join(Path(__file__).parent, "../../", "configs", "maps", mapPath)
-			self.map = Map(fullMapPath)
+			map_path = utils.loadSafe(game_config, "Map")
+			full_map_path = os.path.join(Path(__file__).parent, "../../", "configs", "maps", map_path)
+			self._map = Map(full_map_path)
 
 		# TODO: Break this out into some controller features
-		self.checkboxes		= {}
-		self.dropdowns		= {}
-		
-		self.taskStack		= []
-		self.debugString	= []
+		self._checkboxes		= {}
+		self._dropdowns		= {}
+		 
+		self._task_stack		= []
+		self._debug_string	= []
+     
+		self._start_time		= None
+		self._time					= None
 
-		self.startTime		= None
-		self.time					= None
-
-		self.points				= 0
+		self._points				= 0
 
 	def getMap(self) -> Map:
-		return self.map
+		return self._map
 
 	def start(self) -> None:
-		self.startTime = time.time()
-		self.time			 = 0
-
-if __name__ == "__main__":
-	game = GameState("configs/scenarios/base.yaml")
-	renderer = GameRenderer(1000,1000,game)
-	
-	pygame.init()
-	
-	# Set up the drawing window
-	screen = pygame.display.set_mode([1000, 1000])
-
-	# Run until the user asks to quit
-	running = True
-	while running:
-
-			# Did the user click the window close button?
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-					running = False
-
-		surf = pygame.transform.flip(renderer.render(), False, True)
-
-		screen.blit(surf, (0,0))
-
-		# Flip the display
-		pygame.display.flip()
-
-	pygame.quit()
+		self._start_time = time.time()
+		self._time			 = 0

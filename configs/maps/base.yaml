@@ -1,18 +1,19 @@
 width: 10
 height: 6
+background_color: "white"
+obstacle_color: "blue"
+wall_color: [255,0,0]
 obstacles:
   - 
     shape: "rectangle"
     width: 2
     height: 2
-    xPosition: 5
-    yPosition: 3
+    position: [5,3]
     rotation: 0
   -
     shape: "circle"
     radius: 0.5
-    xPosition: 3
-    yPosition: 2
+    position: [3,2]
   - 
     shape: "polygon"
     corners:

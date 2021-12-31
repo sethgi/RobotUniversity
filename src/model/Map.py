@@ -1,27 +1,46 @@
-from utils import utils
 import sympy.geometry as geometry
 import yaml
+
+from utils import utils
 
 # Base class for 'game piece', which is just some thing in the game
 class Map:
 	def __init__(self, path: str) -> None:
-		mapConfig = yaml.load(open(path), Loader=yaml.FullLoader)
+		map_config = yaml.load(open(path), Loader=yaml.FullLoader)
 
-		self.width = utils.loadSafe(mapConfig, "width")
-		self.height = utils.loadSafe(mapConfig, "height")
+		self._width = utils.loadSafe(map_config, "width")
+		self._height = utils.loadSafe(map_config, "height")
 
-		w,h = self.width, self.height
+		w,h = self._width, self._height
 		corners = ((0,0), (0,w), (h,0), (h,w))
-		self.bounds = geometry.Polygon(*corners)
+		self._bounds = geometry.Polygon(*corners)
 
-		obstacles = utils.loadListSafe(mapConfig, "obstacles", strict=False)
-		self.obstacles = list(map(self.loadObstacle, obstacles))
+		obstacles = utils.loadListSafe(map_config, "obstacles", strict=False)
+		self._obstacles = list(map(self.loadObstacle, obstacles))
 
-		walls = utils.loadListSafe(mapConfig, "walls", strict=False)
-		self.walls = list(map(self.loadWall, walls))
+		walls = utils.loadListSafe(map_config, "walls", strict=False)
+		self._walls = list(map(self.loadWall, walls))
+		
+		self._wall_color = utils.loadSafe(map_config, "wall_color")
+		self._obstacle_color = utils.loadSafe(map_config, "obstacle_color")
 
 	def __eq__(self, other):
-		return self.bounds == other.bounds and self.walls == other.walls and self.obstacles == other.obstacles
+		return self._bounds == other._bounds and self._walls == other._walls and self._obstacles == other._obstacles
+
+	def getWalls(self):
+		return self._walls
+
+	def getBounds(self):
+		return self._bounds
+
+	def getObstacles(self):
+		return self._obstacles
+
+	def getWidth(self):
+		return self._width
+
+	def getHeight(self):
+		return self._height
 
 	def loadObstacle(self, obstacle):
 		shape = utils.loadSafe(obstacle, "shape")
@@ -29,20 +48,18 @@ class Map:
 		if shape == "rectangle":
 			width = utils.loadSafe(obstacle, "width")
 			height = utils.loadSafe(obstacle, "height")
-			xPosition = utils.loadSafe(obstacle, "xPosition")
-			yPosition = utils.loadSafe(obstacle, "yPosition")
+			x_position, y_position = utils.loadListSafe(obstacle, "position")
 			rotation = utils.loadSafe(obstacle, "rotation", \
 																	strict=False, default=0)
 
-			return utils.makeBoundingBox(xPosition, yPosition, \
+			return utils.makeBoundingBox(x_position, y_position, \
 																width, height, rotation)	
 
 		elif shape == "circle":
-			xPosition = utils.loadSafe(obstacle, "xPosition")
-			yPosition = utils.loadSafe(obstacle, "yPosition")
+			x_position, y_position = utils.loadListSafe(obstacle, "position")
 			radius = utils.loadSafe(obstacle, "radius")
 
-			center = geometry.Point(xPosition, yPosition)
+			center = geometry.Point(x_position, y_position)
 			return geometry.Circle(center, radius)
 
 		elif shape == "polygon":
